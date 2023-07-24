@@ -3,10 +3,12 @@ package com.ngtuankhanh.android.coffeehouse.feature.home.homepage
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,11 +34,18 @@ fun CoffeeGridItem(@DrawableRes id: Int, name: String, modifier: Modifier) {
             .fillMaxSize()
             .background(Color(0xFFF7F8FB))
     ) {
-        Image(
-            painter = painterResource(id),
-            contentDescription = null,
-            modifier = Modifier.weight(1f).fillMaxSize()
-        )
+        Box(
+            modifier = Modifier
+                .padding(top = 20.dp, bottom = 16.dp, start = 20.dp, end = 20.dp)
+                .weight(1f)
+                .fillMaxSize()
+        ) {
+            Image(
+                painter = painterResource(id),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         Text(
             text = name,
             style = typography.titleSmall,
