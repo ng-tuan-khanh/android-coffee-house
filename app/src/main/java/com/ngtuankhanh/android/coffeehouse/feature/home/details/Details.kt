@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -82,8 +83,30 @@ fun Details(coffeeName: String) {
         modifier = Modifier.padding(24.dp)
     ) { contentPadding ->
         Surface(modifier = Modifier.padding(contentPadding)) {
-            val totalAmount = rememberSaveable { mutableStateOf(0.0) }
+
             val counter = rememberSaveable { mutableStateOf(1) }
+            val shotOption = rememberSaveable { mutableStateOf(ShotOptions.SINGLE) }
+            val selectOption = rememberSaveable { mutableStateOf(SelectOptions.STANDARD) }
+            val sizeOption = rememberSaveable { mutableStateOf(SizeOptions.SMALL) }
+            val iceOption = rememberSaveable { mutableStateOf(IceOptions.ICE1) }
+
+            // TODO: Fix totalAmount render problem
+            /*val totalAmount = rememberSaveable(counter, shotOption, sizeOption) {
+                derivedStateOf {
+                    val shot = when (shotOption.value) {
+                        ShotOptions.SINGLE -> 1f
+                        ShotOptions.DOUBLE -> 2f
+                    }
+                    val size = when (sizeOption.value) {
+                        SizeOptions.SMALL -> 1f
+                        SizeOptions.MEDIUM -> 1.5f
+                        SizeOptions.BIG -> 2f
+                    }
+                    (size + shot) * counter.value
+                }
+            }*/
+            val totalAmount = rememberSaveable { mutableStateOf(0f) }
+
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
@@ -104,10 +127,10 @@ fun Details(coffeeName: String) {
                         )
                     }
                     AmountOption(name = coffeeName, counter = counter)
-                    ShotOption()
-                    HotColdOption()
-                    SizeOption()
-                    IceOption()
+                    ShotOption(shotOption = shotOption)
+                    SelectOption(selectOption = selectOption)
+                    SizeOption(sizeOption = sizeOption)
+                    IceOption(iceOption = iceOption)
                 }
                 Column() {
                     Row(

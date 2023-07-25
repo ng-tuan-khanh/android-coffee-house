@@ -36,6 +36,22 @@ import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
+enum class ShotOptions {
+    SINGLE, DOUBLE
+}
+
+enum class SelectOptions {
+    STANDARD, PLASTIC
+}
+
+enum class SizeOptions {
+    SMALL, MEDIUM, BIG
+}
+
+enum class IceOptions {
+    ICE1, ICE2, ICE3
+}
+
 @Composable
 fun AmountOption(name: String, counter: MutableState<Int>) {
     Row(
@@ -114,7 +130,7 @@ fun AmountOption(name: String, counter: MutableState<Int>) {
 }
 
 @Composable
-fun ShotOption() {
+fun ShotOption(shotOption: MutableState<ShotOptions>) {
     Divider(
         color = Color(0xFFD8D8D8), modifier = Modifier
             .height(2.dp)
@@ -144,12 +160,17 @@ fun ShotOption() {
                         color = Color(0xFFD8D8D8),
                         shape = RoundedCornerShape(percent = 50)
                     )
+                    .clickable(onClick = {
+                        shotOption.value = ShotOptions.SINGLE
+                    })
             ) {
                 Text(
                     text = "Single",
                     textAlign = TextAlign.Center,
                     style = typography.labelMedium,
-                    color = Color(0xFF001833)
+                    color = if (shotOption.value == ShotOptions.SINGLE) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
             Box(
@@ -162,12 +183,17 @@ fun ShotOption() {
                         color = Color(0xFFD8D8D8),
                         shape = RoundedCornerShape(percent = 50)
                     )
+                    .clickable(onClick = {
+                        shotOption.value = ShotOptions.DOUBLE
+                    })
             ) {
                 Text(
                     text = "Double",
                     textAlign = TextAlign.Center,
                     style = typography.labelMedium,
-                    color = Color(0xFF001833)
+                    color = if (shotOption.value == ShotOptions.DOUBLE) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
         }
@@ -175,7 +201,7 @@ fun ShotOption() {
 }
 
 @Composable
-fun HotColdOption() {
+fun SelectOption(selectOption: MutableState<SelectOptions>) {
     Divider(
         color = Color(0xFFD8D8D8), modifier = Modifier
             .height(2.dp)
@@ -196,18 +222,22 @@ fun HotColdOption() {
         Text(text = "Select", style = typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = {}) {
+            IconButton(onClick = { selectOption.value = SelectOptions.STANDARD }) {
                 Icon(
                     painterResource(id = R.drawable.standardcup),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (selectOption.value == SelectOptions.STANDARD) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { selectOption.value = SelectOptions.PLASTIC }) {
                 Icon(
                     painterResource(id = R.drawable.plasticcup),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (selectOption.value == SelectOptions.PLASTIC) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
         }
@@ -215,7 +245,7 @@ fun HotColdOption() {
 }
 
 @Composable
-fun SizeOption() {
+fun SizeOption(sizeOption: MutableState<SizeOptions>) {
     Divider(
         color = Color(0xFFD8D8D8), modifier = Modifier
             .height(2.dp)
@@ -236,25 +266,31 @@ fun SizeOption() {
         Text(text = "Size", style = typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = {}) {
+            IconButton(onClick = { sizeOption.value = SizeOptions.SMALL }) {
                 Icon(
                     painterResource(id = R.drawable.smallsize),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (sizeOption.value == SizeOptions.SMALL) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { sizeOption.value = SizeOptions.MEDIUM }) {
                 Icon(
                     painterResource(id = R.drawable.mediumsize),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (sizeOption.value == SizeOptions.MEDIUM) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { sizeOption.value = SizeOptions.BIG }) {
                 Icon(
                     painterResource(id = R.drawable.bigsize),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (sizeOption.value == SizeOptions.BIG) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
         }
@@ -262,7 +298,7 @@ fun SizeOption() {
 }
 
 @Composable
-fun IceOption() {
+fun IceOption(iceOption: MutableState<IceOptions>) {
     Divider(
         color = Color(0xFFD8D8D8), modifier = Modifier
             .height(2.dp)
@@ -283,25 +319,31 @@ fun IceOption() {
         Text(text = "Ice", style = typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = {}) {
+            IconButton(onClick = { iceOption.value = IceOptions.ICE1 }) {
                 Icon(
                     painterResource(id = R.drawable.ice1),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (iceOption.value == IceOptions.ICE1) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { iceOption.value = IceOptions.ICE2 }) {
                 Icon(
                     painterResource(id = R.drawable.ice2),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (iceOption.value == IceOptions.ICE2) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { iceOption.value = IceOptions.ICE3 }) {
                 Icon(
                     painterResource(id = R.drawable.ice3),
                     contentDescription = null,
-                    tint = Color(0xFF001833)
+                    tint = if (iceOption.value == IceOptions.ICE3) Color(0xFF001833) else Color(
+                        0xFFD8D8D8
+                    )
                 )
             }
         }
@@ -321,15 +363,17 @@ fun AmountOptionPreview() {
 @Composable
 fun ShotOptionPreview() {
     CoffeeHouseTheme {
-        ShotOption()
+        val shotOption = rememberSaveable { mutableStateOf(ShotOptions.SINGLE) }
+        ShotOption(shotOption = shotOption)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun HotColdOptionPreview() {
+fun SelectOptionPreview() {
     CoffeeHouseTheme {
-        HotColdOption()
+        val selectOption = rememberSaveable { mutableStateOf(SelectOptions.STANDARD) }
+        SelectOption(selectOption = selectOption)
     }
 }
 
@@ -337,7 +381,8 @@ fun HotColdOptionPreview() {
 @Composable
 fun SizeOptionPreview() {
     CoffeeHouseTheme {
-        SizeOption()
+        val sizeOption = rememberSaveable { mutableStateOf(SizeOptions.SMALL) }
+        SizeOption(sizeOption = sizeOption)
     }
 }
 
@@ -345,6 +390,7 @@ fun SizeOptionPreview() {
 @Composable
 fun IceOptionPreview() {
     CoffeeHouseTheme {
-        IceOption()
+        val iceOption = rememberSaveable { mutableStateOf(IceOptions.ICE1) }
+        IceOption(iceOption = iceOption)
     }
 }
