@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -22,19 +21,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderSuccess() {
+fun OrderSuccess(navController: NavHostController) {
     Scaffold() { contentPadding ->
         Surface(
             modifier = Modifier
@@ -90,7 +93,11 @@ fun OrderSuccess() {
                         .clip(shape = RoundedCornerShape(30.dp))
                         .fillMaxWidth()
                         .clickable(onClick = {
-
+                            navController.navigate("home_page") {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    inclusive = true
+                                }
+                            }
                         })
                         .background(Color(0xFF324A59))
                         .padding(12.dp)
@@ -110,6 +117,6 @@ fun OrderSuccess() {
 @Composable
 fun OrderSuccessPreview() {
     CoffeeHouseTheme {
-        OrderSuccess()
+        OrderSuccess(navController = TestNavHostController(LocalContext.current))
     }
 }

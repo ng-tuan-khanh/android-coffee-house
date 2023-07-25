@@ -14,29 +14,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 import com.ngtuankhanh.android.coffeehouse.ui.theme.poppinsFamily
@@ -44,25 +45,22 @@ import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Details(coffeeName: String) {
+fun Details(coffeeName: String = "Americano", navController: NavHostController) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Details",
-                            style = typography.titleMedium,
-                            color = Color(0xFF001833)
-                        )
-                    }
+                    Text(
+                        text = "Details",
+                        style = typography.titleMedium,
+                        color = Color(0xFF001833),
+                        textAlign = TextAlign.Center
+                    )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.navigateUp()
+                    }) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = null,
@@ -71,7 +69,9 @@ fun Details(coffeeName: String) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.navigate("my_cart")
+                    }) {
                         Icon(
                             painterResource(id = R.drawable.buy),
                             contentDescription = null,
@@ -79,8 +79,7 @@ fun Details(coffeeName: String) {
                         )
                     }
                 })
-        },
-        modifier = Modifier.padding(24.dp)
+        }
     ) { contentPadding ->
         Surface(modifier = Modifier.padding(contentPadding)) {
 
@@ -110,8 +109,8 @@ fun Details(coffeeName: String) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
                     .fillMaxSize()
+                    .padding(24.dp)
             ) {
                 Column() {
                     Box(
@@ -162,7 +161,7 @@ fun Details(coffeeName: String) {
                             .clip(shape = RoundedCornerShape(30.dp))
                             .fillMaxWidth()
                             .clickable(onClick = {
-
+                                navController.navigate("my_cart")
                             })
                             .background(Color(0xFF324A59))
                             .padding(12.dp)
@@ -184,6 +183,6 @@ fun Details(coffeeName: String) {
 @Composable
 fun DetailsPreview() {
     CoffeeHouseTheme() {
-        Details("Americano")
+        Details("Americano", navController = TestNavHostController(LocalContext.current))
     }
 }

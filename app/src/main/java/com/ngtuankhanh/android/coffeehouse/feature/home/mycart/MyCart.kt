@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,18 +27,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyCart() {
+fun MyCart(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -47,14 +50,19 @@ fun MyCart() {
 
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        navController.navigate("home_page") {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                inclusive = true
+                            }
+                        }
+                    }) {
                         Icon(
                             Icons.Default.ArrowBack, contentDescription = null
                         )
                     }
                 })
-        },
-        modifier = Modifier.padding(24.dp)
+        }
     ) { contentPadding ->
         Surface(modifier = Modifier.padding(contentPadding)) {
             Column(
@@ -114,8 +122,9 @@ fun MyCart() {
                             .weight(1f)
                             .fillMaxWidth()
                             .clickable(onClick = {
-
-                            })
+                                navController.navigate("order_success")
+                            }
+                            )
                             .background(Color(0xFF324A59))
                             .padding(12.dp)
                     ) {
@@ -141,6 +150,6 @@ fun MyCart() {
 @Composable
 fun DetailsPreview() {
     CoffeeHouseTheme() {
-        MyCart()
+        MyCart(navController = TestNavHostController(LocalContext.current))
     }
 }
