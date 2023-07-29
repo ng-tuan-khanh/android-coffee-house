@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
-import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @Composable
 fun CoffeeGridItem(@DrawableRes id: Int, name: String, modifier: Modifier) {
@@ -48,7 +48,7 @@ fun CoffeeGridItem(@DrawableRes id: Int, name: String, modifier: Modifier) {
         }
         Text(
             text = name,
-            style = typography.titleSmall,
+            style = MaterialTheme.typography.titleSmall,
             color = Color(0xFF001833)
         )
     }

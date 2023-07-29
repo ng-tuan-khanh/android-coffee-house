@@ -13,6 +13,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,12 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
-import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +38,7 @@ fun Profile(navController: NavHostController) {
                 title = {
                     Text(
                         text = "Profile",
-                        style = typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium,
                         color = Color(0xFF001833)
                     )
                 },
@@ -62,9 +63,8 @@ fun Profile(navController: NavHostController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp)
-            ) {
-            }
+                    .padding(bottom = 24.dp, start = 24.dp, end = 24.dp)
+            ) {}
         }
     }
 }

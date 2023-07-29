@@ -68,7 +68,7 @@ fun MyCart(navController: NavHostController) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .padding(top = 8.dp, bottom = 24.dp, start = 24.dp, end = 24.dp)
+                    .padding(bottom = 24.dp, start = 24.dp, end = 24.dp)
                     .fillMaxSize()
             ) {
                 Text(
@@ -85,7 +85,7 @@ fun MyCart(navController: NavHostController) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        items(5) {
+                        items(10) {
                             MyCartListItem(id = R.drawable.americano)
                         }
                     }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,7 +34,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
-import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,20 +67,20 @@ fun OrderSuccess(navController: NavHostController) {
                     }
                     Text(
                         "Order Success",
-                        style = typography.titleMedium.merge(TextStyle(fontSize = 22.sp)),
+                        style = MaterialTheme.typography.titleMedium.merge(TextStyle(fontSize = 22.sp)),
                         color = Color(0xFF181D2D)
                     )
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             "Your order has been placed successfully",
-                            style = typography.bodyMedium,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = Color(0xFFAAAAAA),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             "For more details, go to my orders",
-                            style = typography.bodyMedium,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = Color(0xFFAAAAAA),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -93,10 +93,8 @@ fun OrderSuccess(navController: NavHostController) {
                         .clip(shape = RoundedCornerShape(30.dp))
                         .fillMaxWidth()
                         .clickable(onClick = {
-                            navController.navigate("home_page") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    inclusive = true
-                                }
+                            navController.navigate("my_order") {
+                                popUpTo(navController.graph.findStartDestination().id)
                             }
                         })
                         .background(Color(0xFF324A59))
@@ -104,7 +102,7 @@ fun OrderSuccess(navController: NavHostController) {
                 ) {
                     Text(
                         text = "Track My Order",
-                        style = typography.titleSmall,
+                        style = MaterialTheme.typography.titleSmall,
                         color = Color(0xFFFFFFFF)
                     )
                 }

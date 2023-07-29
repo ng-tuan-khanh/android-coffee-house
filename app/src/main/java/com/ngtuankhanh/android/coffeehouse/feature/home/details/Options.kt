@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
-import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 enum class ShotOptions {
     SINGLE, DOUBLE
@@ -66,7 +66,7 @@ fun AmountOption(name: String, counter: MutableState<Int>) {
                 end = 8.dp
             )
     ) {
-        Text(text = name, style = typography.titleSmall, color = Color(0xFF001833))
+        Text(text = name, style = MaterialTheme.typography.titleSmall, color = Color(0xFF001833))
         Row(
             modifier = Modifier
                 .width(80.dp)
@@ -90,7 +90,7 @@ fun AmountOption(name: String, counter: MutableState<Int>) {
                 Text(
                     text = "+",
                     textAlign = TextAlign.Center,
-                    style = typography.titleSmall,
+                    style = MaterialTheme.typography.titleSmall,
                     color = Color(0xFF001833)
                 )
             }
@@ -104,7 +104,7 @@ fun AmountOption(name: String, counter: MutableState<Int>) {
                 Text(
                     text = "${counter.value}",
                     textAlign = TextAlign.Center,
-                    style = typography.titleSmall,
+                    style = MaterialTheme.typography.titleSmall,
                     color = Color(0xFF001833)
                 )
             }
@@ -121,7 +121,7 @@ fun AmountOption(name: String, counter: MutableState<Int>) {
                 Text(
                     text = "-",
                     textAlign = TextAlign.Center,
-                    style = typography.titleSmall,
+                    style = MaterialTheme.typography.titleSmall,
                     color = Color(0xFF001833)
                 )
             }
@@ -148,7 +148,7 @@ fun ShotOption(shotOption: MutableState<ShotOptions>) {
                 end = 8.dp
             )
     ) {
-        Text(text = "Shot", style = typography.titleSmall, color = Color(0xFF001833))
+        Text(text = "Shot", style = MaterialTheme.typography.titleSmall, color = Color(0xFF001833))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -167,7 +167,7 @@ fun ShotOption(shotOption: MutableState<ShotOptions>) {
                 Text(
                     text = "Single",
                     textAlign = TextAlign.Center,
-                    style = typography.labelMedium,
+                    style = MaterialTheme.typography.labelMedium,
                     color = if (shotOption.value == ShotOptions.SINGLE) Color(0xFF001833) else Color(
                         0xFFD8D8D8
                     )
@@ -190,7 +190,7 @@ fun ShotOption(shotOption: MutableState<ShotOptions>) {
                 Text(
                     text = "Double",
                     textAlign = TextAlign.Center,
-                    style = typography.labelMedium,
+                    style = MaterialTheme.typography.labelMedium,
                     color = if (shotOption.value == ShotOptions.DOUBLE) Color(0xFF001833) else Color(
                         0xFFD8D8D8
                     )
@@ -219,7 +219,7 @@ fun SelectOption(selectOption: MutableState<SelectOptions>) {
                 end = 8.dp
             )
     ) {
-        Text(text = "Select", style = typography.titleSmall, color = Color(0xFF001833))
+        Text(text = "Select", style = MaterialTheme.typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             IconButton(onClick = { selectOption.value = SelectOptions.STANDARD }) {
@@ -263,7 +263,7 @@ fun SizeOption(sizeOption: MutableState<SizeOptions>) {
                 end = 8.dp
             )
     ) {
-        Text(text = "Size", style = typography.titleSmall, color = Color(0xFF001833))
+        Text(text = "Size", style = MaterialTheme.typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             IconButton(onClick = { sizeOption.value = SizeOptions.SMALL }) {
@@ -316,7 +316,7 @@ fun IceOption(iceOption: MutableState<IceOptions>) {
                 end = 8.dp
             )
     ) {
-        Text(text = "Ice", style = typography.titleSmall, color = Color(0xFF001833))
+        Text(text = "Ice", style = MaterialTheme.typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             IconButton(onClick = { iceOption.value = IceOptions.ICE1 }) {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,20 +35,20 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
+import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationBar
+import com.ngtuankhanh.android.coffeehouse.feature.common.LoyaltyCard
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
-import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(navController: NavHostController) {
-    val numLoyalty = rememberSaveable { mutableStateOf(4) }
     Scaffold() { contentPadding ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(contentPadding)
         ) {
-            Column() {
+            Column {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
@@ -60,12 +61,12 @@ fun HomePage(navController: NavHostController) {
                     Column() {
                         Text(
                             "Good morning",
-                            style = typography.titleSmall,
+                            style = MaterialTheme.typography.titleSmall,
                             color = Color(0xFFD8D8D8)
                         )
                         Text(
                             "Anderson",
-                            style = typography.titleMedium,
+                            style = MaterialTheme.typography.titleMedium,
                             color = Color(0xFF001833)
                         )
                     }
@@ -90,63 +91,7 @@ fun HomePage(navController: NavHostController) {
                         }
                     }
                 }
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = Color(0xFF324A59),
-                    modifier = Modifier.padding(start = 24.dp, end = 24.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Min)
-                            .background(color = Color.Transparent)
-                            .padding(16.dp)
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp)
-                        ) {
-                            Text(
-                                text = "Loyalty card",
-                                style = typography.titleSmall,
-                                color = Color(0xFFD8D8D8)
-                            )
-                            Text(
-                                text = "${numLoyalty.value} / 8",
-                                style = typography.titleSmall,
-                                color = Color(0xFFD8D8D8)
-                            )
-                        }
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                                .clip(shape = RoundedCornerShape(12.dp))
-                                .background(Color(0xFFFFFFFF))
-                                .padding(top = 12.dp)
-                        ) {
-                            (1..8).forEach { index ->
-                                Box(
-                                    contentAlignment = Alignment.Center,
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxWidth()
-                                ) {
-                                    Image(
-                                        painterResource(id = R.drawable.coffeecup),
-                                        contentDescription = null,
-                                        colorFilter = if (index > numLoyalty.value) ColorFilter.tint(
-                                            Color(0xFFD8D8D8)
-                                        ) else null
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+                LoyaltyCard(modifier = Modifier.padding(start = 24.dp, end = 24.dp))
                 Surface(
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
                     color = Color(0xFF324A59),
@@ -161,7 +106,7 @@ fun HomePage(navController: NavHostController) {
                     ) {
                         Text(
                             text = "Choose your coffee",
-                            style = typography.titleMedium,
+                            style = MaterialTheme.typography.titleMedium,
                             color = Color(0xFFD8D8D8)
                         )
                         Column(
@@ -221,37 +166,7 @@ fun HomePage(navController: NavHostController) {
                                 )
                             }
                         }
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(70.dp)
-                                .clip(shape = RoundedCornerShape(20.dp))
-                                .background(Color(0xFFFFFFFF))
-                        ) {
-                            IconButton(onClick = {}) {
-                                Icon(
-                                    painterResource(id = R.drawable.shop),
-                                    contentDescription = null,
-                                    tint = Color(0xFF324A59)
-                                )
-                            }
-                            IconButton(onClick = {}) {
-                                Icon(
-                                    painterResource(id = R.drawable.gift),
-                                    contentDescription = null,
-                                    tint = Color(0xFFD8D8D8)
-                                )
-                            }
-                            IconButton(onClick = {}) {
-                                Icon(
-                                    painterResource(id = R.drawable.bill),
-                                    contentDescription = null,
-                                    tint = Color(0xFFD8D8D8)
-                                )
-                            }
-                        }
+                        BottomNavigationBar(navController = navController)
                     }
                 }
             }

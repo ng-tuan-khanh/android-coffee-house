@@ -9,6 +9,7 @@ import com.ngtuankhanh.android.coffeehouse.feature.home.Profile
 import com.ngtuankhanh.android.coffeehouse.feature.home.details.Details
 import com.ngtuankhanh.android.coffeehouse.feature.home.homepage.HomePage
 import com.ngtuankhanh.android.coffeehouse.feature.home.mycart.MyCart
+import com.ngtuankhanh.android.coffeehouse.feature.trackorders.MyOrder
 
 @Composable
 fun CoffeeHouseApp() {
@@ -29,6 +30,9 @@ fun CoffeeHouseApp() {
         }
         composable("profile") {
             Profile(navController = navController)
+        }
+        composable("my_order") {
+            MyOrder(navController = navController)
         }
     }
 }
