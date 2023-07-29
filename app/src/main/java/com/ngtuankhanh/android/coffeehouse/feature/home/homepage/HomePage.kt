@@ -36,6 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationBar
+import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationItem
 import com.ngtuankhanh.android.coffeehouse.feature.common.LoyaltyCard
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
@@ -166,7 +167,10 @@ fun HomePage(navController: NavHostController) {
                                 )
                             }
                         }
-                        BottomNavigationBar(navController = navController)
+                        BottomNavigationBar(
+                            page = BottomNavigationItem.Home,
+                            navController = navController
+                        )
                     }
                 }
             }

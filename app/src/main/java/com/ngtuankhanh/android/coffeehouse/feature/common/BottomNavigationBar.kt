@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,13 +20,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
+enum class BottomNavigationItem {
+    Home, Rewards, MyOrder
+}
+
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
+fun BottomNavigationBar(page: BottomNavigationItem, navController: NavHostController) {
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
@@ -35,25 +42,46 @@ fun BottomNavigationBar(navController: NavHostController) {
             .clip(RoundedCornerShape(20.dp))
             .background(Color(0xFFFFFFFF))
     ) {
-        IconButton(onClick = {}) {
+        IconButton(onClick = {
+            navController.navigate("home_page") {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }) {
             Icon(
                 painterResource(id = R.drawable.shop),
                 contentDescription = null,
-                tint = Color(0xFF324A59)
+                tint = if (page == BottomNavigationItem.Home) Color(0xFF324A59) else Color(
+                    0xFFD8D8D8
+                )
             )
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = {
+            navController.navigate("rewards") {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }) {
             Icon(
                 painterResource(id = R.drawable.gift),
                 contentDescription = null,
-                tint = Color(0xFFD8D8D8)
+                tint = if (page == BottomNavigationItem.Rewards) Color(0xFF324A59) else Color(
+                    0xFFD8D8D8
+                )
             )
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = {
+            navController.navigate("my_order") {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }) {
             Icon(
                 painterResource(id = R.drawable.bill),
                 contentDescription = null,
-                tint = Color(0xFFD8D8D8)
+                tint = if (page == BottomNavigationItem.MyOrder) Color(0xFF324A59) else Color(
+                    0xFFD8D8D8
+                )
             )
         }
     }
@@ -63,6 +91,9 @@ fun BottomNavigationBar(navController: NavHostController) {
 @Composable
 fun BottomNavigationBarPreview() {
     CoffeeHouseTheme() {
-        BottomNavigationBar(navController = TestNavHostController(LocalContext.current))
+        BottomNavigationBar(
+            page = BottomNavigationItem.Home,
+            navController = TestNavHostController(LocalContext.current)
+        )
     }
 }

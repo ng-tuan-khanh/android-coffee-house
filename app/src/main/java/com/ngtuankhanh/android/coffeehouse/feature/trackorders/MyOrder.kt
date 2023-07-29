@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationBar
+import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationItem
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -61,7 +62,12 @@ fun MyOrder(navController: NavHostController) {
                     .padding(bottom = 24.dp, start = 24.dp, end = 24.dp)
             ) {
                 val pagerState = rememberPagerState()
-                HorizontalPager(pageCount = 2, state = pagerState, pageSpacing = 24.dp) { page ->
+                HorizontalPager(
+                    pageCount = 2,
+                    state = pagerState,
+                    pageSpacing = 24.dp,
+                    modifier = Modifier.weight(1f)
+                ) { page ->
                     val textColor = if (page == 0) {
                         Color(0xFF324A59)
                     } else {
@@ -133,9 +139,7 @@ fun MyOrder(navController: NavHostController) {
 
                         Box(
                             modifier = Modifier
-//                                .weight(1f)
                                 .padding(top = 32.dp, bottom = 16.dp)
-//                                .fillMaxSize()
                         ) {
                             LazyColumn(
                                 verticalArrangement = Arrangement.spacedBy(24.dp),
@@ -150,7 +154,10 @@ fun MyOrder(navController: NavHostController) {
                         }
                     }
                 }
-                BottomNavigationBar(navController = navController)
+                BottomNavigationBar(
+                    page = BottomNavigationItem.MyOrder,
+                    navController = navController
+                )
             }
         }
     }

@@ -38,6 +38,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationBar
+import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationItem
 import com.ngtuankhanh.android.coffeehouse.feature.common.LoyaltyCard
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
@@ -122,14 +123,19 @@ fun Rewards(navController: NavHostController) {
                     color = Color(0xFF324A59),
                     modifier = Modifier.padding(top = 24.dp)
                 )
-                Box(modifier = Modifier.weight(1f).padding(bottom = 16.dp)) {
+                Box(modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = 16.dp)) {
                     LazyColumn() {
                         items(10) {
                             HistoryRewardsItem()
                         }
                     }
                 }
-                BottomNavigationBar(navController = navController)
+                BottomNavigationBar(
+                    page = BottomNavigationItem.Rewards,
+                    navController = navController
+                )
             }
         }
     }
