@@ -43,7 +43,7 @@ fun HistoryRewardsItem() {
             Text(text =  "24 June | 12:30 PM", style = MaterialTheme.typography.labelSmall, color = Color(0x38324A59))
         }
         Text(
-            text = "+ 12 Pts",
+            text = "+ 12 pts",
             style = MaterialTheme.typography.titleMedium.merge(TextStyle(fontSize = 16.sp)),
             color = Color(0xFF001833)
         )

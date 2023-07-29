@@ -135,7 +135,7 @@ fun Rewards(navController: NavHostController) {
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 fun RewardsPreview() {
     CoffeeHouseTheme() {

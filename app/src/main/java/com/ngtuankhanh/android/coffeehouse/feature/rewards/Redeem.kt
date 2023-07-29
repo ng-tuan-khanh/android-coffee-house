@@ -1,8 +1,10 @@
 package com.ngtuankhanh.android.coffeehouse.feature.rewards
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -57,8 +59,13 @@ fun Redeem(navController: NavHostController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp)
+                    .padding(bottom = 24.dp, start = 24.dp, end = 24.dp)
             ) {
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(32.dp)) {
+                    items(10) {
+                        RedeemItem()
+                    }
+                }
             }
         }
     }
