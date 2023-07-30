@@ -1,16 +1,12 @@
 package com.ngtuankhanh.android.coffeehouse.feature.home.homepage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,13 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -123,21 +114,21 @@ fun HomePage(navController: NavHostController) {
                                     .fillMaxWidth()
                             ) {
                                 CoffeeGridItem(
-                                    id = R.drawable.americano,
-                                    name = "Americano",
+                                    imageId = R.drawable.americano,
+                                    coffeeName = "Americano",
                                     modifier = Modifier
                                         .weight(1f)
                                         .clickable(onClick = {
-                                            navController.navigate("details")
+                                            navController.navigate("details/${R.drawable.americano}/Americano")
                                         })
                                 )
                                 CoffeeGridItem(
-                                    id = R.drawable.cappuccino,
-                                    name = "Cappuccino",
+                                    imageId = R.drawable.cappuccino,
+                                    coffeeName = "Cappuccino",
                                     modifier = Modifier
                                         .weight(1f)
                                         .clickable(onClick = {
-                                            navController.navigate("details")
+                                            navController.navigate("details/${R.drawable.cappuccino}/Cappuccino")
                                         })
                                 )
                             }
@@ -148,21 +139,21 @@ fun HomePage(navController: NavHostController) {
                                     .fillMaxWidth()
                             ) {
                                 CoffeeGridItem(
-                                    id = R.drawable.mocha,
-                                    name = "Mocha",
+                                    imageId = R.drawable.mocha,
+                                    coffeeName = "Mocha",
                                     modifier = Modifier
                                         .weight(1f)
                                         .clickable(onClick = {
-                                            navController.navigate("details")
+                                            navController.navigate("details/${R.drawable.mocha}/Mocha")
                                         })
                                 )
                                 CoffeeGridItem(
-                                    id = R.drawable.flatwhite,
-                                    name = "Flat White",
+                                    imageId = R.drawable.flat_white,
+                                    coffeeName = "Flat White",
                                     modifier = Modifier
                                         .weight(1f)
                                         .clickable(onClick = {
-                                            navController.navigate("details")
+                                            navController.navigate("details/${R.drawable.flat_white}/Flat White")
                                         })
                                 )
                             }

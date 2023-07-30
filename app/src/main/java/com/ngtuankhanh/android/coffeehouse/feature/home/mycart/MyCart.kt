@@ -37,12 +37,15 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
+import com.ngtuankhanh.android.coffeehouse.feature.common.CommonViewModel
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.livedata.observeAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyCart(navController: NavHostController) {
+fun MyCart(navController: NavHostController, viewModel: CommonViewModel = viewModel()) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,11 +54,7 @@ fun MyCart(navController: NavHostController) {
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate("home_page") {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                inclusive = true
-                            }
-                        }
+                        navController.navigateUp()
                     }) {
                         Icon(
                             Icons.Default.ArrowBack, contentDescription = null
@@ -82,11 +81,14 @@ fun MyCart(navController: NavHostController) {
                         .weight(1f)
                         .fillMaxWidth()
                 ) {
+                    val myCartItems = viewModel.myCartItems.observeAsState()
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        items(10) {
-                            MyCartListItem(id = R.drawable.americano)
+                        items(myCartItems.value?.size ?: 0) { index ->
+                            MyCartListItem(
+                                myCartItems.value?.get(index) ?: return@items
+                            )
                         }
                     }
                 }
@@ -107,7 +109,7 @@ fun MyCart(navController: NavHostController) {
                             color = Color(0x38001833)
                         )
                         Text(
-                            text = "$3.00",
+                            text = "$${viewModel.getTotalAmount()}",
                             style = typography.titleLarge,
                             color = Color(0xFF001833)
                         )
@@ -123,6 +125,7 @@ fun MyCart(navController: NavHostController) {
                             .fillMaxWidth()
                             .clickable(onClick = {
                                 navController.navigate("order_success")
+                                viewModel.addMyOrderItem()
                             }
                             )
                             .background(Color(0xFF324A59))

@@ -1,11 +1,9 @@
 package com.ngtuankhanh.android.coffeehouse.feature.home.details
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,14 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -40,8 +35,8 @@ enum class ShotOptions {
     SINGLE, DOUBLE
 }
 
-enum class SelectOptions {
-    STANDARD, PLASTIC
+enum class HotColdOptions {
+    HOT, COLD
 }
 
 enum class SizeOptions {
@@ -49,7 +44,7 @@ enum class SizeOptions {
 }
 
 enum class IceOptions {
-    ICE1, ICE2, ICE3
+    LESS_ICE, ICE, FULL_ICE
 }
 
 @Composable
@@ -76,6 +71,7 @@ fun AmountOption(name: String, counter: MutableState<Int>) {
                     color = Color(0xFFD8D8D8),
                     shape = RoundedCornerShape(percent = 50)
                 )
+                .clip(shape = RoundedCornerShape(percent = 50))
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -160,6 +156,7 @@ fun ShotOption(shotOption: MutableState<ShotOptions>) {
                         color = Color(0xFFD8D8D8),
                         shape = RoundedCornerShape(percent = 50)
                     )
+                    .clip(shape = RoundedCornerShape(percent = 50))
                     .clickable(onClick = {
                         shotOption.value = ShotOptions.SINGLE
                     })
@@ -183,6 +180,7 @@ fun ShotOption(shotOption: MutableState<ShotOptions>) {
                         color = Color(0xFFD8D8D8),
                         shape = RoundedCornerShape(percent = 50)
                     )
+                    .clip(shape = RoundedCornerShape(percent = 50))
                     .clickable(onClick = {
                         shotOption.value = ShotOptions.DOUBLE
                     })
@@ -201,7 +199,7 @@ fun ShotOption(shotOption: MutableState<ShotOptions>) {
 }
 
 @Composable
-fun SelectOption(selectOption: MutableState<SelectOptions>) {
+fun HotColdOption(selectOption: MutableState<HotColdOptions>) {
     Divider(
         color = Color(0xFFD8D8D8), modifier = Modifier
             .height(2.dp)
@@ -222,20 +220,20 @@ fun SelectOption(selectOption: MutableState<SelectOptions>) {
         Text(text = "Select", style = MaterialTheme.typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = { selectOption.value = SelectOptions.STANDARD }) {
+            IconButton(onClick = { selectOption.value = HotColdOptions.HOT }) {
                 Icon(
-                    painterResource(id = R.drawable.standardcup),
+                    painterResource(id = R.drawable.hot_coffee),
                     contentDescription = null,
-                    tint = if (selectOption.value == SelectOptions.STANDARD) Color(0xFF001833) else Color(
+                    tint = if (selectOption.value == HotColdOptions.HOT) Color(0xFF001833) else Color(
                         0xFFD8D8D8
                     )
                 )
             }
-            IconButton(onClick = { selectOption.value = SelectOptions.PLASTIC }) {
+            IconButton(onClick = { selectOption.value = HotColdOptions.COLD }) {
                 Icon(
-                    painterResource(id = R.drawable.plasticcup),
+                    painterResource(id = R.drawable.cold_coffee),
                     contentDescription = null,
-                    tint = if (selectOption.value == SelectOptions.PLASTIC) Color(0xFF001833) else Color(
+                    tint = if (selectOption.value == HotColdOptions.COLD) Color(0xFF001833) else Color(
                         0xFFD8D8D8
                     )
                 )
@@ -268,7 +266,7 @@ fun SizeOption(sizeOption: MutableState<SizeOptions>) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             IconButton(onClick = { sizeOption.value = SizeOptions.SMALL }) {
                 Icon(
-                    painterResource(id = R.drawable.smallsize),
+                    painterResource(id = R.drawable.small_size),
                     contentDescription = null,
                     tint = if (sizeOption.value == SizeOptions.SMALL) Color(0xFF001833) else Color(
                         0xFFD8D8D8
@@ -277,7 +275,7 @@ fun SizeOption(sizeOption: MutableState<SizeOptions>) {
             }
             IconButton(onClick = { sizeOption.value = SizeOptions.MEDIUM }) {
                 Icon(
-                    painterResource(id = R.drawable.mediumsize),
+                    painterResource(id = R.drawable.medium_size),
                     contentDescription = null,
                     tint = if (sizeOption.value == SizeOptions.MEDIUM) Color(0xFF001833) else Color(
                         0xFFD8D8D8
@@ -286,7 +284,7 @@ fun SizeOption(sizeOption: MutableState<SizeOptions>) {
             }
             IconButton(onClick = { sizeOption.value = SizeOptions.BIG }) {
                 Icon(
-                    painterResource(id = R.drawable.bigsize),
+                    painterResource(id = R.drawable.big_size),
                     contentDescription = null,
                     tint = if (sizeOption.value == SizeOptions.BIG) Color(0xFF001833) else Color(
                         0xFFD8D8D8
@@ -319,29 +317,29 @@ fun IceOption(iceOption: MutableState<IceOptions>) {
         Text(text = "Ice", style = MaterialTheme.typography.titleSmall, color = Color(0xFF001833))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = { iceOption.value = IceOptions.ICE1 }) {
+            IconButton(onClick = { iceOption.value = IceOptions.LESS_ICE }) {
                 Icon(
                     painterResource(id = R.drawable.ice1),
                     contentDescription = null,
-                    tint = if (iceOption.value == IceOptions.ICE1) Color(0xFF001833) else Color(
+                    tint = if (iceOption.value == IceOptions.LESS_ICE) Color(0xFF001833) else Color(
                         0xFFD8D8D8
                     )
                 )
             }
-            IconButton(onClick = { iceOption.value = IceOptions.ICE2 }) {
+            IconButton(onClick = { iceOption.value = IceOptions.ICE }) {
                 Icon(
                     painterResource(id = R.drawable.ice2),
                     contentDescription = null,
-                    tint = if (iceOption.value == IceOptions.ICE2) Color(0xFF001833) else Color(
+                    tint = if (iceOption.value == IceOptions.ICE) Color(0xFF001833) else Color(
                         0xFFD8D8D8
                     )
                 )
             }
-            IconButton(onClick = { iceOption.value = IceOptions.ICE3 }) {
+            IconButton(onClick = { iceOption.value = IceOptions.FULL_ICE }) {
                 Icon(
                     painterResource(id = R.drawable.ice3),
                     contentDescription = null,
-                    tint = if (iceOption.value == IceOptions.ICE3) Color(0xFF001833) else Color(
+                    tint = if (iceOption.value == IceOptions.FULL_ICE) Color(0xFF001833) else Color(
                         0xFFD8D8D8
                     )
                 )
@@ -370,10 +368,10 @@ fun ShotOptionPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun SelectOptionPreview() {
+fun HotColdOptionPreview() {
     CoffeeHouseTheme {
-        val selectOption = rememberSaveable { mutableStateOf(SelectOptions.STANDARD) }
-        SelectOption(selectOption = selectOption)
+        val selectOption = rememberSaveable { mutableStateOf(HotColdOptions.HOT) }
+        HotColdOption(selectOption = selectOption)
     }
 }
 
@@ -390,7 +388,7 @@ fun SizeOptionPreview() {
 @Composable
 fun IceOptionPreview() {
     CoffeeHouseTheme {
-        val iceOption = rememberSaveable { mutableStateOf(IceOptions.ICE1) }
+        val iceOption = rememberSaveable { mutableStateOf(IceOptions.LESS_ICE) }
         IceOption(iceOption = iceOption)
     }
 }

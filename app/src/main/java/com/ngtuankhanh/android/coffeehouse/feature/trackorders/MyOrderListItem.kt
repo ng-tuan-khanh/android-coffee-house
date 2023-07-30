@@ -16,10 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ngtuankhanh.android.coffeehouse.feature.common.MyOrderItem
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
 @Composable
-fun MyOrderItem(textColor: Color) {
+fun MyOrderListItem(textColor: Color, myOrderItem: MyOrderItem) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,17 +31,17 @@ fun MyOrderItem(textColor: Color) {
             modifier = Modifier.align(alignment = Alignment.TopStart)
         ) {
             Text(
-                text = "24 June | 12:30 PM",
+                text = myOrderItem.time,
                 style = MaterialTheme.typography.labelSmall,
                 color = Color(0x38324A59)
             )
             Text(
-                text = "Cappuccino",
+                text = myOrderItem.coffeeName,
                 style = MaterialTheme.typography.labelSmall,
                 color = textColor,
             )
             Text(
-                text = "3 Addersion Court Chino Hills, HO56824, United States",
+                text = myOrderItem.address,
                 style = MaterialTheme.typography.labelSmall,
                 color = textColor,
                 maxLines = 1,
@@ -48,7 +49,7 @@ fun MyOrderItem(textColor: Color) {
             )
         }
         Text(
-            text = "$3.00",
+            text = "$${myOrderItem.amount}",
             style = MaterialTheme.typography.titleMedium,
             color = textColor,
             modifier = Modifier.align(alignment = Alignment.TopEnd)
@@ -65,6 +66,13 @@ fun MyOrderItem(textColor: Color) {
 @Composable
 fun MyOrderItemPreview() {
     CoffeeHouseTheme() {
-        MyOrderItem(Color(0xFF324A59))
+        MyOrderListItem(
+            textColor = Color(0xFF324A59), myOrderItem = MyOrderItem(
+                time = "10:00 AM",
+                coffeeName = "Cappuccino",
+                address = "123 Nguyen Van Linh, Da Nang",
+                amount = 10.0f
+            )
+        )
     }
 }

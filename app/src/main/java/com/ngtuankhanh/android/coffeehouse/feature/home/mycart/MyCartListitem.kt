@@ -25,11 +25,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ngtuankhanh.android.coffeehouse.R
+import com.ngtuankhanh.android.coffeehouse.feature.common.MyCartItem
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @Composable
-fun MyCartListItem(@DrawableRes id: Int) {
+fun MyCartListItem(myCartItem: MyCartItem) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +46,7 @@ fun MyCartListItem(@DrawableRes id: Int) {
                 .fillMaxSize()
         ) {
             Image(
-                painterResource(id = id),
+                painterResource(id = myCartItem.imageId),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize()
             )
@@ -57,24 +58,30 @@ fun MyCartListItem(@DrawableRes id: Int) {
                 .weight(2f)
                 .fillMaxSize()
         ) {
-            Column(modifier = Modifier
-                .weight(3f)
-                .width(IntrinsicSize.Min)) {
+            Column(
+                modifier = Modifier
+                    .weight(3f)
+                    .width(IntrinsicSize.Min)
+            ) {
                 Text(
-                    text = "Americano",
+                    text = myCartItem.coffeeName,
                     style = typography.labelMedium,
                     color = Color(0xFF001833),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "single|iced|medium|full ice",
+                    text = "${myCartItem.shotOption}|${myCartItem.selectOption}|${myCartItem.sizeOption}|${myCartItem.iceOption}",
                     style = typography.labelSmall,
                     color = Color(0x91000000),
                     maxLines = 1,
-                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis
                 )
-                Text(text = "x 1", style = typography.labelMedium, color = Color(0x91000000))
+                Text(
+                    text = "x ${myCartItem.counter}",
+                    style = typography.labelMedium,
+                    color = Color(0x91000000)
+                )
             }
             Box(
                 contentAlignment = Alignment.CenterEnd, modifier = Modifier
@@ -83,7 +90,7 @@ fun MyCartListItem(@DrawableRes id: Int) {
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "$3.0",
+                    text = "$${myCartItem.totalAmount}",
                     style = typography.titleMedium,
                     color = Color(0xFF001833),
                     maxLines = 1,
@@ -97,6 +104,17 @@ fun MyCartListItem(@DrawableRes id: Int) {
 @Composable
 fun MyCartListItemPreview() {
     CoffeeHouseTheme() {
-        MyCartListItem(id = R.drawable.americano)
+        MyCartListItem(
+            myCartItem = MyCartItem(
+                imageId = R.drawable.americano,
+                coffeeName = "Americano",
+                counter = 1,
+                shotOption = "Single",
+                selectOption = "Cold",
+                sizeOption = "Medium",
+                iceOption = "Full Ice",
+                totalAmount = 5f
+            )
+        )
     }
 }

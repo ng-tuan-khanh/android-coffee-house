@@ -1,6 +1,10 @@
 package com.ngtuankhanh.android.coffeehouse.feature.trackorders
 
+import androidx.compose.animation.core.Spring.StiffnessHigh
+import androidx.compose.animation.core.Spring.StiffnessLow
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +25,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,11 +38,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationBar
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationItem
+import com.ngtuankhanh.android.coffeehouse.feature.common.CommonViewModel
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun MyOrder(navController: NavHostController) {
+fun MyOrder(navController: NavHostController, viewModel: CommonViewModel = viewModel()) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -55,6 +64,7 @@ fun MyOrder(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(contentPadding)
         ) {
+            val coroutineScope = rememberCoroutineScope()
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
@@ -73,6 +83,9 @@ fun MyOrder(navController: NavHostController) {
                     } else {
                         Color(0x80324A59)
                     }
+                    val myOrderItems =
+                        if (page == 0) viewModel.myOnGoingOrderItems.observeAsState()
+                        else viewModel.myHistoryOrderItems.observeAsState()
                     Column() {
                         Row(
                             horizontalArrangement = Arrangement.SpaceAround,
@@ -84,6 +97,9 @@ fun MyOrder(navController: NavHostController) {
                                     .weight(1f)
                                     .height(IntrinsicSize.Min)
                                     .padding(horizontal = 24.dp)
+                                    .clickable(onClick = {
+                                        coroutineScope.launch { pagerState.scrollToPage(0) }
+                                    })
                             ) {
                                 Text(
                                     text = "On going",
@@ -110,6 +126,9 @@ fun MyOrder(navController: NavHostController) {
                                     .weight(1f)
                                     .height(IntrinsicSize.Min)
                                     .padding(horizontal = 24.dp)
+                                    .clickable(onClick = {
+                                        coroutineScope.launch { pagerState.scrollToPage(page = 1) }
+                                    })
                             ) {
                                 Text(
                                     text = "History",
@@ -145,9 +164,10 @@ fun MyOrder(navController: NavHostController) {
                                 verticalArrangement = Arrangement.spacedBy(24.dp),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                items(10) {
-                                    MyOrderItem(
-                                        textColor = textColor
+                                items(myOrderItems.value?.size ?: 0) { index ->
+                                    MyOrderListItem(
+                                        textColor = textColor,
+                                        myOrderItem = myOrderItems.value?.get(index) ?: return@items
                                     )
                                 }
                             }

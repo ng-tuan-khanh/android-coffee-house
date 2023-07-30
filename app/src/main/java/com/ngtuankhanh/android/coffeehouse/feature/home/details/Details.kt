@@ -1,5 +1,6 @@
 package com.ngtuankhanh.android.coffeehouse.feature.home.details
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,12 +41,20 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
+import com.ngtuankhanh.android.coffeehouse.feature.common.CommonViewModel
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
-import com.ngtuankhanh.android.coffeehouse.ui.theme.poppinsFamily
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ngtuankhanh.android.coffeehouse.feature.common.MyCartItem
+import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Details(coffeeName: String = "Americano", navController: NavHostController) {
+fun Details(
+    @DrawableRes imageId: Int,
+    coffeeName: String,
+    navController: NavHostController,
+    viewModel: CommonViewModel = viewModel()
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -85,26 +94,19 @@ fun Details(coffeeName: String = "Americano", navController: NavHostController) 
 
             val counter = rememberSaveable { mutableStateOf(1) }
             val shotOption = rememberSaveable { mutableStateOf(ShotOptions.SINGLE) }
-            val selectOption = rememberSaveable { mutableStateOf(SelectOptions.STANDARD) }
+            val selectOption = rememberSaveable { mutableStateOf(HotColdOptions.HOT) }
             val sizeOption = rememberSaveable { mutableStateOf(SizeOptions.SMALL) }
-            val iceOption = rememberSaveable { mutableStateOf(IceOptions.ICE1) }
-
-            // TODO: Fix totalAmount render problem
-            /*val totalAmount = rememberSaveable(counter, shotOption, sizeOption) {
-                derivedStateOf {
-                    val shot = when (shotOption.value) {
-                        ShotOptions.SINGLE -> 1f
-                        ShotOptions.DOUBLE -> 2f
-                    }
-                    val size = when (sizeOption.value) {
-                        SizeOptions.SMALL -> 1f
-                        SizeOptions.MEDIUM -> 1.5f
-                        SizeOptions.BIG -> 2f
-                    }
-                    (size + shot) * counter.value
-                }
-            }*/
-            val totalAmount = rememberSaveable { mutableStateOf(0f) }
+            val iceOption = rememberSaveable { mutableStateOf(IceOptions.LESS_ICE) }
+            val totalAmount = rememberSaveable(counter.value, shotOption.value, sizeOption.value) {
+                counter.value * (when (shotOption.value) {
+                    ShotOptions.SINGLE -> 1f
+                    ShotOptions.DOUBLE -> 2f
+                } * when (sizeOption.value) {
+                    SizeOptions.SMALL -> 1f
+                    SizeOptions.MEDIUM -> 1.5f
+                    SizeOptions.BIG -> 2f
+                })
+            }
 
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -120,14 +122,14 @@ fun Details(coffeeName: String = "Americano", navController: NavHostController) 
                             .height(150.dp)
                     ) {
                         Image(
-                            painterResource(id = R.drawable.americano),
+                            painterResource(id = imageId),
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize()
                         )
                     }
                     AmountOption(name = coffeeName, counter = counter)
                     ShotOption(shotOption = shotOption)
-                    SelectOption(selectOption = selectOption)
+                    HotColdOption(selectOption = selectOption)
                     SizeOption(sizeOption = sizeOption)
                     IceOption(iceOption = iceOption)
                 }
@@ -140,18 +142,12 @@ fun Details(coffeeName: String = "Americano", navController: NavHostController) 
                     ) {
                         Text(
                             text = "Total Amount",
-                            fontFamily = poppinsFamily,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            letterSpacing = 0.sp,
+                            style = typography.titleLarge.merge(TextStyle(fontSize = 16.sp)),
                             color = Color(0xFF001833)
                         )
                         Text(
-                            text = "$${totalAmount.value}",
-                            fontFamily = poppinsFamily,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            letterSpacing = 0.sp,
+                            text = "$${totalAmount}",
+                            style = typography.titleLarge.merge(TextStyle(fontSize = 16.sp)),
                             color = Color(0xFF001833)
                         )
                     }
@@ -162,6 +158,32 @@ fun Details(coffeeName: String = "Americano", navController: NavHostController) 
                             .fillMaxWidth()
                             .clickable(onClick = {
                                 navController.navigate("my_cart")
+                                viewModel.addMyCartItem(
+                                    MyCartItem(
+                                        imageId = imageId,
+                                        coffeeName = coffeeName,
+                                        counter = counter.value,
+                                        shotOption = when (shotOption.value) {
+                                            ShotOptions.SINGLE -> "Single"
+                                            ShotOptions.DOUBLE -> "Double"
+                                        },
+                                        selectOption = when (selectOption.value) {
+                                            HotColdOptions.HOT -> "Hot"
+                                            HotColdOptions.COLD -> "Cold"
+                                        },
+                                        sizeOption = when (sizeOption.value) {
+                                            SizeOptions.SMALL -> "Small"
+                                            SizeOptions.MEDIUM -> "Medium"
+                                            SizeOptions.BIG -> "Big"
+                                        },
+                                        iceOption = when (iceOption.value) {
+                                            IceOptions.LESS_ICE -> "Less ice"
+                                            IceOptions.ICE -> "Ice"
+                                            IceOptions.FULL_ICE -> "Full ice"
+                                        },
+                                        totalAmount = totalAmount
+                                    )
+                                )
                             })
                             .background(Color(0xFF324A59))
                             .padding(12.dp)
@@ -176,13 +198,16 @@ fun Details(coffeeName: String = "Americano", navController: NavHostController) 
             }
         }
     }
-
 }
 
 @Preview
 @Composable
 fun DetailsPreview() {
     CoffeeHouseTheme() {
-        Details("Americano", navController = TestNavHostController(LocalContext.current))
+        Details(
+            imageId = R.drawable.americano,
+            coffeeName = "Americano",
+            navController = TestNavHostController(LocalContext.current)
+        )
     }
 }

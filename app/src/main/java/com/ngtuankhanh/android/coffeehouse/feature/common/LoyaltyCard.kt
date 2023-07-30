@@ -77,7 +77,7 @@ fun LoyaltyCard(modifier: Modifier = Modifier) {
                             .fillMaxWidth()
                     ) {
                         Image(
-                            painterResource(id = R.drawable.coffeecup),
+                            painterResource(id = R.drawable.coffee_cup),
                             contentDescription = null,
                             colorFilter = if (index > numLoyalty.value) ColorFilter.tint(
                                 Color(0xFFD8D8D8)

@@ -104,7 +104,7 @@ fun Rewards(navController: NavHostController) {
                                 shape = RoundedCornerShape(5.dp),
                                 color = Color(0x30A2CDE9),
                                 onClick = {
-
+                                    navController.navigate("redeem")
                                 }
                             ) {
                                 Text(
