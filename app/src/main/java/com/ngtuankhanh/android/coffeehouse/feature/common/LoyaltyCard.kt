@@ -29,8 +29,7 @@ import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
 @Composable
-fun LoyaltyCard(modifier: Modifier = Modifier) {
-    val numLoyalty = rememberSaveable { mutableStateOf(4) }
+fun LoyaltyCard(modifier: Modifier = Modifier, numLoyalty: Int) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = Color(0xFF324A59),
@@ -55,7 +54,7 @@ fun LoyaltyCard(modifier: Modifier = Modifier) {
                     color = Color(0xFFD8D8D8)
                 )
                 Text(
-                    text = "${numLoyalty.value} / 8",
+                    text = "${numLoyalty} / 8",
                     style = MaterialTheme.typography.titleSmall,
                     color = Color(0xFFD8D8D8)
                 )
@@ -79,7 +78,7 @@ fun LoyaltyCard(modifier: Modifier = Modifier) {
                         Image(
                             painterResource(id = R.drawable.coffee_cup),
                             contentDescription = null,
-                            colorFilter = if (index > numLoyalty.value) ColorFilter.tint(
+                            colorFilter = if (index > numLoyalty) ColorFilter.tint(
                                 Color(0xFFD8D8D8)
                             ) else null
                         )
@@ -94,6 +93,6 @@ fun LoyaltyCard(modifier: Modifier = Modifier) {
 @Composable
 fun LoyaltyCardPreview() {
     CoffeeHouseTheme {
-        LoyaltyCard()
+        LoyaltyCard(numLoyalty = 4)
     }
 }

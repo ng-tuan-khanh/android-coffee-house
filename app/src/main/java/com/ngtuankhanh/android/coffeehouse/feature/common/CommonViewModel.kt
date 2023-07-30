@@ -8,6 +8,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CommonViewModel : ViewModel() {
+    private val _loyaltyCardCounter = MutableLiveData<Int>(0)
+    val loyaltyCardCounter: LiveData<Int>
+        get() = _loyaltyCardCounter
+
     private val _myCartItems = MutableLiveData<MutableList<MyCartItem>?>(mutableListOf())
     val myCartItems: LiveData<MutableList<MyCartItem>?>
         get() = _myCartItems
@@ -19,6 +23,61 @@ class CommonViewModel : ViewModel() {
     private val _myHistoryOrderItems = MutableLiveData<MutableList<MyOrderItem>>(mutableListOf())
     val myHistoryOrderItems: LiveData<MutableList<MyOrderItem>>
         get() = _myHistoryOrderItems
+
+    private val _historyRewards = MutableLiveData<MutableList<HistoryReward>>(mutableListOf())
+    val historyRewards: LiveData<MutableList<HistoryReward>>
+        get() = _historyRewards
+
+    val rewardPoints = MutableLiveData<Int>(2000)
+
+    val rewardPointsUsed = MutableLiveData<Int>(0)
+
+    fun reduceRewardPointsUsed() {
+        rewardPoints.value = rewardPoints.value?.minus(rewardPointsUsed.value ?: 0)
+    }
+
+    private fun processRewardPoints() {
+        _myCartItems.value?.forEach { it ->
+            _loyaltyCardCounter.value = if (_loyaltyCardCounter.value?.plus(it.counter)!! <= 8) {
+                _loyaltyCardCounter.value?.plus(it.counter)
+            } else 8
+            for (i in 0 until it.counter) {
+                if (it.coffeeName == "Americano") {
+                    rewardPoints.value = rewardPoints.value?.plus(13)
+                    _historyRewards.value?.add(
+                        HistoryReward(
+                            coffeeName = "Americano",
+                            points = 13
+                        )
+                    )
+                } else if (it.coffeeName == "Cappuccino") {
+                    rewardPoints.value = rewardPoints.value?.plus(15)
+                    _historyRewards.value?.add(
+                        HistoryReward(
+                            coffeeName = "Cappuccino",
+                            points = 15
+                        )
+                    )
+                } else if (it.coffeeName == "Mocha") {
+                    rewardPoints.value = rewardPoints.value?.plus(16)
+                    _historyRewards.value?.add(
+                        HistoryReward(
+                            coffeeName = "Mocha",
+                            points = 16
+                        )
+                    )
+                } else if (it.coffeeName == "Flat White") {
+                    rewardPoints.value = rewardPoints.value?.plus(14)
+                    _historyRewards.value?.add(
+                        HistoryReward(
+                            coffeeName = "Flat White",
+                            points = 14
+                        )
+                    )
+                }
+            }
+        }
+    }
 
     fun addMyCartItem(item: MyCartItem) {
         val list = _myCartItems.value ?: mutableListOf()
@@ -51,9 +110,6 @@ class CommonViewModel : ViewModel() {
 
         _myOnGoingOrderItems.value = onGoingList
 
-        // Clear my cart items
-        _myCartItems.value = mutableListOf()
-
         viewModelScope.launch {
             delay(10000)
 
@@ -64,8 +120,12 @@ class CommonViewModel : ViewModel() {
 
             // Clear on going list
             _myOnGoingOrderItems.value = mutableListOf()
-        }
 
+            processRewardPoints()
+
+            // Clear my cart items
+            _myCartItems.value = mutableListOf()
+        }
     }
 
     fun getTotalAmount(): Float {
@@ -115,5 +175,10 @@ data class MyOrderItem(
     val amount: Float,
     val coffeeName: String,
     val address: String = "3 Addersion Court Chino Hills, HO56824, United States"
+)
+
+data class HistoryReward(
+    val coffeeName: String,
+    val points: Int
 )
 

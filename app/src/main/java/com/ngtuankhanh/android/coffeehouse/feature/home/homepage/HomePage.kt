@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -28,12 +29,14 @@ import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationBar
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationItem
+import com.ngtuankhanh.android.coffeehouse.feature.common.CommonViewModel
 import com.ngtuankhanh.android.coffeehouse.feature.common.LoyaltyCard
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomePage(navController: NavHostController) {
+fun HomePage(navController: NavHostController, viewModel: CommonViewModel = viewModel()) {
     Scaffold() { contentPadding ->
         Surface(
             modifier = Modifier
@@ -83,7 +86,11 @@ fun HomePage(navController: NavHostController) {
                         }
                     }
                 }
-                LoyaltyCard(modifier = Modifier.padding(start = 24.dp, end = 24.dp))
+                val loyaltyCardCounter = viewModel.loyaltyCardCounter.observeAsState()
+                LoyaltyCard(
+                    numLoyalty = loyaltyCardCounter?.value ?: 0,
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+                )
                 Surface(
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
                     color = Color(0xFF324A59),

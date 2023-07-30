@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,12 +40,14 @@ import androidx.navigation.testing.TestNavHostController
 import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationBar
 import com.ngtuankhanh.android.coffeehouse.feature.common.BottomNavigationItem
+import com.ngtuankhanh.android.coffeehouse.feature.common.CommonViewModel
 import com.ngtuankhanh.android.coffeehouse.feature.common.LoyaltyCard
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Rewards(navController: NavHostController) {
+fun Rewards(navController: NavHostController, viewModel: CommonViewModel = viewModel()) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -72,7 +75,9 @@ fun Rewards(navController: NavHostController) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    LoyaltyCard()
+                    val rewardPoints = viewModel.rewardPoints.observeAsState()
+                    val loyaltyCardCounter = viewModel.loyaltyCardCounter.observeAsState()
+                    LoyaltyCard(numLoyalty = loyaltyCardCounter.value ?: 0)
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         color = Color(0xFF324A59),
@@ -91,7 +96,7 @@ fun Rewards(navController: NavHostController) {
                                     color = Color(0xFFD8D8D8)
                                 )
                                 Text(
-                                    text = "2750",
+                                    text = "${rewardPoints?.value ?: 0}",
                                     style = MaterialTheme.typography.titleMedium.merge(
                                         TextStyle(
                                             fontSize = 24.sp
@@ -123,12 +128,21 @@ fun Rewards(navController: NavHostController) {
                     color = Color(0xFF324A59),
                     modifier = Modifier.padding(top = 24.dp)
                 )
-                Box(modifier = Modifier
-                    .weight(1f)
-                    .padding(bottom = 16.dp)) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(bottom = 16.dp)
+                ) {
+                    val historyRewards = viewModel.historyRewards.observeAsState()
                     LazyColumn() {
-                        items(10) {
-                            HistoryRewardsItem()
+                        items(historyRewards.value?.size ?: 0) { index ->
+                            val historyReward = historyRewards.value?.get(index)
+                            historyReward?.let {
+                                HistoryRewardsItem(
+                                    coffeeName = it.coffeeName,
+                                    points = it.points
+                                )
+                            }
                         }
                     }
                 }

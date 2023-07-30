@@ -30,11 +30,14 @@ fun CoffeeHouseApp() {
 
     NavHost(navController = navController, startDestination = "home_page") {
         composable("home_page") {
-            val viewModel = viewModel<CommonViewModel>(viewModelStoreOwner)
-            HomePage(navController = navController)
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                HomePage(navController = navController)
+            }
         }
         composable("rewards") {
-            Rewards(navController = navController)
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                Rewards(navController = navController)
+            }
         }
         composable("my_order") {
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
@@ -42,17 +45,24 @@ fun CoffeeHouseApp() {
             }
         }
         composable(
-            route = "details/{imageId}/{coffeeName}",
+            route = "details/{imageId}/{coffeeName}?discount={discount}",
             arguments = listOf(
                 navArgument("imageId") { type = NavType.IntType },
-                navArgument("coffeeName") { type = NavType.StringType })
+                navArgument("coffeeName") { type = NavType.StringType },
+                navArgument("discount") { type = NavType.FloatType; defaultValue = 0f })
         ) { backStackEntry ->
             CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
 
                 val imageId =
                     backStackEntry.arguments?.getInt("imageId") ?: R.drawable.americano
                 val coffeeName = backStackEntry.arguments?.getString("coffeeName") ?: "Americano"
-                Details(imageId = imageId, coffeeName = coffeeName, navController = navController)
+                val discount = backStackEntry.arguments?.getFloat("discount") ?: 0f
+                Details(
+                    imageId = imageId,
+                    coffeeName = coffeeName,
+                    discount = discount,
+                    navController = navController
+                )
             }
         }
         composable("my_cart") {
@@ -67,7 +77,9 @@ fun CoffeeHouseApp() {
             Profile(navController = navController)
         }
         composable("redeem") {
-            Redeem(navController = navController)
+            CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+                Redeem(navController = navController)
+            }
         }
     }
 }

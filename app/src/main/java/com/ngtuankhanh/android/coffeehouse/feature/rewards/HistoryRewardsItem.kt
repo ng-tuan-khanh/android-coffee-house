@@ -27,7 +27,7 @@ import com.ngtuankhanh.android.coffeehouse.feature.home.details.ShotOptions
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
 @Composable
-fun HistoryRewardsItem() {
+fun HistoryRewardsItem(coffeeName: String, points: Int) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -39,11 +39,11 @@ fun HistoryRewardsItem() {
             )
     ) {
         Column() {
-            Text(text = "Americano", style = MaterialTheme.typography.labelMedium, color = Color(0xFF001833))
-            Text(text =  "24 June | 12:30 PM", style = MaterialTheme.typography.labelSmall, color = Color(0x38324A59))
+            Text(text = coffeeName, style = MaterialTheme.typography.labelMedium, color = Color(0xFF001833))
+            // Text(text =  "24 June | 12:30 PM", style = MaterialTheme.typography.labelSmall, color = Color(0x38324A59))
         }
         Text(
-            text = "+ 12 pts",
+            text = "+ $points pts",
             style = MaterialTheme.typography.titleMedium.merge(TextStyle(fontSize = 16.sp)),
             color = Color(0xFF001833)
         )
@@ -59,6 +59,6 @@ fun HistoryRewardsItem() {
 @Composable
 fun HistoryRewardsItemPreview() {
     CoffeeHouseTheme() {
-        HistoryRewardsItem()
+        HistoryRewardsItem("Americano", 12)
     }
 }

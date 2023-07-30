@@ -46,6 +46,7 @@ import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ngtuankhanh.android.coffeehouse.feature.common.MyCartItem
 import com.ngtuankhanh.android.coffeehouse.ui.theme.typography
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +54,7 @@ fun Details(
     @DrawableRes imageId: Int,
     coffeeName: String,
     navController: NavHostController,
+    discount: Float,
     viewModel: CommonViewModel = viewModel()
 ) {
     Scaffold(
@@ -79,7 +81,9 @@ fun Details(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("my_cart")
+                        navController.navigate("my_cart") {
+                            popUpTo(navController.graph.startDestinationId)
+                        }
                     }) {
                         Icon(
                             painterResource(id = R.drawable.buy),
@@ -105,7 +109,7 @@ fun Details(
                     SizeOptions.SMALL -> 1f
                     SizeOptions.MEDIUM -> 1.5f
                     SizeOptions.BIG -> 2f
-                })
+                } * 5.0f)
             }
 
             Column(
@@ -135,6 +139,16 @@ fun Details(
                 }
                 Column() {
                     Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "- $${discount}",
+                            style = typography.titleLarge.merge(TextStyle(fontSize = 16.sp)),
+                            color = Color(0xFFA83E32)
+                        )
+                    }
+                    Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -157,7 +171,9 @@ fun Details(
                             .clip(shape = RoundedCornerShape(30.dp))
                             .fillMaxWidth()
                             .clickable(onClick = {
-                                navController.navigate("my_cart")
+                                navController.navigate("my_cart") {
+                                    popUpTo(navController.graph.startDestinationId)
+                                }
                                 viewModel.addMyCartItem(
                                     MyCartItem(
                                         imageId = imageId,
@@ -181,9 +197,12 @@ fun Details(
                                             IceOptions.ICE -> "Ice"
                                             IceOptions.FULL_ICE -> "Full ice"
                                         },
-                                        totalAmount = totalAmount
+                                        totalAmount = ((totalAmount - discount) * 100.0f).roundToInt() / 100.0f
                                     )
                                 )
+                                if (discount > 0f) {
+                                    viewModel.reduceRewardPointsUsed()
+                                }
                             })
                             .background(Color(0xFF324A59))
                             .padding(12.dp)
@@ -207,6 +226,7 @@ fun DetailsPreview() {
         Details(
             imageId = R.drawable.americano,
             coffeeName = "Americano",
+            discount = 0f,
             navController = TestNavHostController(LocalContext.current)
         )
     }

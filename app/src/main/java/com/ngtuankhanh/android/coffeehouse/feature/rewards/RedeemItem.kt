@@ -1,5 +1,6 @@
 package com.ngtuankhanh.android.coffeehouse.feature.rewards
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +29,7 @@ import com.ngtuankhanh.android.coffeehouse.R
 import com.ngtuankhanh.android.coffeehouse.ui.theme.CoffeeHouseTheme
 
 @Composable
-fun RedeemItem() {
+fun RedeemItem(@DrawableRes imageId: Int, coffeeName: String, points: Int, onClick: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -40,7 +41,7 @@ fun RedeemItem() {
                 .height(50.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.americano),
+                painter = painterResource(id = imageId),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize()
             )
@@ -52,7 +53,7 @@ fun RedeemItem() {
                 .fillMaxWidth()
         ) {
             Text(
-                text = "Americano",
+                text = coffeeName,
                 style = MaterialTheme.typography.titleSmall,
                 color = Color(0xFF324A59),
                 maxLines = 1,
@@ -70,13 +71,12 @@ fun RedeemItem() {
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(50))
-                .clickable(onClick = {
-                })
+                .clickable(onClick = onClick)
                 .background(Color(0xFF324A59))
                 .padding(top = 8.dp, bottom = 8.dp, start = 12.dp, end = 12.dp)
         ) {
             Text(
-                text = "1340 pts",
+                text = "$points pts",
                 style = MaterialTheme.typography.labelSmall,
                 color = Color(0xFFFFFFFF)
             )
@@ -88,6 +88,10 @@ fun RedeemItem() {
 @Composable
 fun PreviewRedeemItem() {
     CoffeeHouseTheme() {
-        RedeemItem()
+        RedeemItem(
+            imageId = R.drawable.americano,
+            coffeeName = "Americano",
+            points = 1340,
+            onClick = {})
     }
 }

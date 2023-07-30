@@ -31,7 +31,7 @@ fun MyOrderListItem(textColor: Color, myOrderItem: MyOrderItem) {
             modifier = Modifier.align(alignment = Alignment.TopStart)
         ) {
             Text(
-                text = myOrderItem.time,
+                text = "", // myOrderItem.time,
                 style = MaterialTheme.typography.labelSmall,
                 color = Color(0x38324A59)
             )
