@@ -89,7 +89,11 @@ fun HomePage(navController: NavHostController, viewModel: CommonViewModel = view
                 val loyaltyCardCounter = viewModel.loyaltyCardCounter.observeAsState()
                 LoyaltyCard(
                     numLoyalty = loyaltyCardCounter?.value ?: 0,
-                    modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+                    modifier = Modifier
+                        .padding(start = 24.dp, end = 24.dp)
+                        .clickable(onClick = {
+                            viewModel.resetLoyaltyCardCounter()
+                        })
                 )
                 Surface(
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),

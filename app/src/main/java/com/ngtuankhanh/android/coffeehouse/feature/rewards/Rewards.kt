@@ -2,6 +2,7 @@ package com.ngtuankhanh.android.coffeehouse.feature.rewards
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,7 +78,13 @@ fun Rewards(navController: NavHostController, viewModel: CommonViewModel = viewM
                 ) {
                     val rewardPoints = viewModel.rewardPoints.observeAsState()
                     val loyaltyCardCounter = viewModel.loyaltyCardCounter.observeAsState()
-                    LoyaltyCard(numLoyalty = loyaltyCardCounter.value ?: 0)
+                    LoyaltyCard(
+                        modifier = Modifier
+                            .clickable(onClick = {
+                                viewModel.resetLoyaltyCardCounter()
+                            }),
+                        numLoyalty = loyaltyCardCounter.value ?: 0
+                    )
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         color = Color(0xFF324A59),

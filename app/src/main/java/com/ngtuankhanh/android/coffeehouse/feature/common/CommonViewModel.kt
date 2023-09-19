@@ -32,6 +32,12 @@ class CommonViewModel : ViewModel() {
 
     val rewardPointsUsed = MutableLiveData<Int>(0)
 
+    fun resetLoyaltyCardCounter() {
+        if (_loyaltyCardCounter.value == 8) {
+            _loyaltyCardCounter.value = 0
+        }
+    }
+
     fun reduceRewardPointsUsed() {
         rewardPoints.value = rewardPoints.value?.minus(rewardPointsUsed.value ?: 0)
     }
